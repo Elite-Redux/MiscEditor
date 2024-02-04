@@ -134,7 +134,8 @@ namespace AbilityEditor
 
 		private void AddAbility(object sender, RoutedEventArgs e)
 		{
-			viewModel.Abilities.Abilities.Add(new Ability("ABILITY_NEW", "New Ability", ["Placeholder"]));
+			int count = viewModel.Abilities.Abilities.Count(it => it.EnumValue.StartsWith("ABILITY_NEW"));
+			viewModel.Abilities.Abilities.Add(new Ability(count == 0 ? "ABILITY_NEW" : $"ABILITY_NEW_{count + 1}", "New Ability", ["Placeholder"]));
 			viewModel.SelectedAbility = viewModel.Abilities.Abilities.Last();
 		}
 
@@ -142,8 +143,21 @@ namespace AbilityEditor
 		{
 			var selectedAbility = viewModel.SelectedAbility;
 			if (selectedAbility == null) { return; }
+
+			string newEnumValue = AbilityEnumTextBox.Text.Trim();
+			if (!newEnumValue.StartsWith("ABILITY_"))
+			{
+				MessageBox.Show("Ability enum must start with ABILITY_", "Could Not Save", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+			if (selectedAbility.EnumValue != newEnumValue && viewModel.Abilities.Abilities.Any(it => it.EnumValue == newEnumValue))
+			{
+				MessageBox.Show("Enum value already exists", "Could Not Save", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
 			Ability newAbility = new(Name: AbilityNameTextBox.Text.Trim(),
-				EnumValue: AbilityEnumTextBox.Text.Trim(),
+				EnumValue: newEnumValue,
 				Description: [AbilityDescription1TextBox.Text.Trim(), AbilityDescription2TextBox.Text.Trim()]);
 			viewModel.Abilities.Abilities[viewModel.Abilities.Abilities.IndexOf(selectedAbility)] = newAbility;
 			viewModel.SelectedAbility = newAbility;
@@ -177,7 +191,8 @@ namespace AbilityEditor
 
 		private void AddMove(object sender, RoutedEventArgs e)
 		{
-			viewModel.Moves.Moves.Add(new());
+			int currentNewMoves = viewModel.Moves.Moves.Count(it => it.EnumValue.StartsWith("MOVE_NEW_MOVE"));
+			viewModel.Moves.Moves.Add(new(currentNewMoves == 0 ? "MOVE_NEW_MOVE" : $"MOVE_NEW_MOVE_{currentNewMoves + 1}"));
 			viewModel.SelectedMove = viewModel.Moves.Moves.Last();
 		}
 
@@ -195,9 +210,22 @@ namespace AbilityEditor
 		private void SaveMove(object sender, RoutedEventArgs e)
 		{
 			if (viewModel.SelectedMove == null) return;
+
+			string newEnumValue = MoveEnumTextBox.Text.Trim();
+			if (!newEnumValue.StartsWith("MOVE_"))
+			{
+				MessageBox.Show("Move enum must start with MOVE_", "Could Not Save", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+			if (viewModel.SelectedMove.EnumValue != newEnumValue && viewModel.Moves.Moves.Any(it => it.EnumValue == newEnumValue))
+			{
+				MessageBox.Show("Enum value already exists", "Could Not Save", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
 			var newMove = viewModel.SelectedMove with
 			{
-				EnumValue = MoveEnumTextBox.Text.Trim(),
+				EnumValue = newEnumValue,
 				Name = MoveNameTextBox.Text.Trim(),
 				ShortName = MoveShortNameTextBox.Text.Trim(),
 				DescriptionTwoLine = [Move2LineTextBox.Text.Trim(), Move2Line2TextBox.Text.Trim()],

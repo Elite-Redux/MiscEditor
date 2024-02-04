@@ -16,13 +16,13 @@ namespace AbilityEditor
 {
 	public record Move(string EnumValue, string Name, string ShortName, string Animation, ImmutableList<string> DescriptionTwoLine, ImmutableList<string> DescriptionFourLine, BattleMove BattleMove)
 	{
-		public Move() : this(EnumValue: "MOVE_NEW_MOVE",
+		public Move(string enumValue = "MOVE_NEW_MOVE") : this(EnumValue: enumValue,
 			Name: "New Move",
 			ShortName: "New Move",
 			Animation: "Move_NONE",
 			DescriptionTwoLine: [],
 			DescriptionFourLine: [],
-			BattleMove: new("MOVE_NEW_MOVE"))
+			BattleMove: new(enumValue))
 		{ }
 	}
 
@@ -86,7 +86,7 @@ namespace AbilityEditor
 		int Priority)
 	{
 		public BattleMove(string enumValue = "") : this(EnumValue: enumValue,
-				Effect: "EFFECT_HIT",
+				Effect: "EFFECT_PLACEHOLDER",
 				Power: 0,
 				Type: PokeType.NORMAL,
 				Type2: PokeType.NORMAL,

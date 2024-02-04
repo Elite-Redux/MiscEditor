@@ -167,14 +167,18 @@ namespace AbilityEditor
 			using var fileStream = File.Open(TextPath, FileMode.Create, FileAccess.Write, FileShare.None);
 			using StreamWriter writer = new(fileStream);
 
-			string GetConstName(string enumValue) => "s"
+			static string GetConstName(string enumValue) => "s"
 				+ string.Concat(enumValue.Split('_').Select(it => it.ToLower()).Select(CultureInfo.InvariantCulture.TextInfo.ToTitleCase))
 				+ "Description";
 
-			foreach (var ability in abilityList.Abilities)
+			static string MakeDescription(List<string> description) => string.Join(@"\n", description.Take(2).Where(it => !string.IsNullOrWhiteSpace(it)));
+
+			var textMap = abilityList.Abilities.GroupBy(it => MakeDescription(it.Description)).ToDictionary(it => it.Key, it => it.First());
+
+			foreach (var ability in textMap.Values)
 			{
 				writer.WriteLine($"static const u8 {GetConstName(ability.EnumValue)}[] = "
-					+ $"_(\"{string.Join(@"\n", ability.Description.Take(2).Where(it => !string.IsNullOrWhiteSpace(it)))}\");");
+					+ $"_(\"{MakeDescription(ability.Description)}\");");
 			}
 
 			writer.WriteLine();
@@ -193,7 +197,8 @@ namespace AbilityEditor
 
 			foreach (var ability in abilityList.Abilities)
 			{
-				writer.WriteLine($"    [{ability.EnumValue}] = {GetConstName(ability.EnumValue)},");
+				var text = MakeDescription(ability.Description);
+				writer.WriteLine($"    [{ability.EnumValue}] = {GetConstName(textMap[text].EnumValue)},");
 			}
 
 			writer.WriteLine("};");

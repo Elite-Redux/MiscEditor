@@ -58,8 +58,8 @@
 					<TextBlock HorizontalAlignment="Left" Margin="143,79,0,0" TextWrapping="Wrap" Text="Two-Line Description:" VerticalAlignment="Top" Grid.Column="1"/>
 					<TextBlock HorizontalAlignment="Left" Margin="143,120,0,0" TextWrapping="Wrap" Text="Four-Line Description" VerticalAlignment="Top" Grid.Column="1"/>
 					<TextBox x:Name="MoveEnumTextBox" HorizontalAlignment="Left" Margin="269,9,0,0" TextWrapping="NoWrap" Text="{Binding SelectedMove.EnumValue, Mode=OneWay}" VerticalAlignment="Top" Width="144" Grid.Column="1" />
-					<TextBox x:Name="MoveNameTextBox" HorizontalAlignment="Left" Margin="269,32,0,0" TextWrapping="NoWrap" Text="{Binding SelectedMove.Name, Mode=OneWay}" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
-					<TextBox x:Name="MoveShortNameTextBox" HorizontalAlignment="Left" Margin="269,55,0,0" TextWrapping="NoWrap" Text="{Binding SelectedMove.ShortName, Mode=OneWay}" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
+					<TextBox x:Name="MoveNameTextBox" HorizontalAlignment="Left" Margin="269,32,0,0" TextWrapping="NoWrap" Text="{Binding SelectedMove.Name, Mode=OneWay}" VerticalAlignment="Top" Width="120" Grid.Column="1" MaxLength="18"/>
+					<TextBox x:Name="MoveShortNameTextBox" HorizontalAlignment="Left" Margin="269,55,0,0" TextWrapping="NoWrap" Text="{Binding SelectedMove.ShortName, Mode=OneWay}" VerticalAlignment="Top" Width="120" Grid.Column="1" MaxLength="12"/>
 					<TextBox x:Name="Move2LineTextBox" HorizontalAlignment="Left" Margin="269,78,0,0" TextWrapping="NoWrap" Text="{Binding SelectedMove.DescriptionTwoLine[0], Mode=OneWay}" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
 					<TextBox x:Name="Move2Line2TextBox" HorizontalAlignment="Left" Margin="269,96,0,0" TextWrapping="NoWrap" Text="{Binding SelectedMove.DescriptionTwoLine[1], Mode=OneWay}" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
 					<TextBox x:Name="Move4LineTextBox" HorizontalAlignment="Left" Margin="269,119,0,0" TextWrapping="NoWrap" Text="{Binding SelectedMove.DescriptionFourLine[0], Mode=OneWay}" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
