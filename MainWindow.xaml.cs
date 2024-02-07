@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -116,19 +117,26 @@ namespace AbilityEditor
 
 		void LoadData()
 		{
-			AbilityLoader loader = new(ErFolder);
-			viewModel.Abilities = loader.GetAbilities();
-
-			MoveLoader moveLoader = new(ErFolder);
-			viewModel.Moves = moveLoader.ReadMoveList();
-
-			if (!Tabs.IsEnabled)
+			try
 			{
-				Tabs.IsEnabled = true;
-				MovesTab.IsEnabled = true;
-				AbilityTab.IsEnabled = true;
-				Tabs.SelectedItem = AbilityTab;
-				ExportButton.IsEnabled = true;
+				AbilityLoader loader = new(ErFolder);
+				viewModel.Abilities = loader.GetAbilities();
+
+				MoveLoader moveLoader = new(ErFolder);
+				viewModel.Moves = moveLoader.ReadMoveList();
+
+				if (!Tabs.IsEnabled)
+				{
+					Tabs.IsEnabled = true;
+					MovesTab.IsEnabled = true;
+					AbilityTab.IsEnabled = true;
+					Tabs.SelectedItem = AbilityTab;
+					ExportButton.IsEnabled = true;
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"Failed parsing data: {ex}", "Failed loading data", MessageBoxButton.OK, MessageBoxImage.Error);
 			}
 		}
 
@@ -138,6 +146,9 @@ namespace AbilityEditor
 			viewModel.Abilities.Abilities.Add(new Ability(count == 0 ? "ABILITY_NEW" : $"ABILITY_NEW_{count + 1}", "New Ability", ["Placeholder"]));
 			viewModel.SelectedAbility = viewModel.Abilities.Abilities.Last();
 		}
+
+		[GeneratedRegex(@"^[a-z][a-z_0-9]+$")]
+		private static partial Regex ValidEnum();
 
 		private void SaveAbility(object sender, RoutedEventArgs e)
 		{
@@ -153,6 +164,11 @@ namespace AbilityEditor
 			if (selectedAbility.EnumValue != newEnumValue && viewModel.Abilities.Abilities.Any(it => it.EnumValue == newEnumValue))
 			{
 				MessageBox.Show("Enum value already exists", "Could Not Save", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+			if (!ValidEnum().IsMatch(newEnumValue))
+			{
+				MessageBox.Show("Enum value must start with a letter and contain only letters, numbers, and underscores", "Could Not Save", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
@@ -220,6 +236,11 @@ namespace AbilityEditor
 			if (viewModel.SelectedMove.EnumValue != newEnumValue && viewModel.Moves.Moves.Any(it => it.EnumValue == newEnumValue))
 			{
 				MessageBox.Show("Enum value already exists", "Could Not Save", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+			if (!ValidEnum().IsMatch(newEnumValue))
+			{
+				MessageBox.Show("Enum value must start with a letter and contain only letters, numbers, and underscores", "Could Not Save", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 

@@ -234,7 +234,7 @@ namespace AbilityEditor
 		private static partial Regex BattleMoveFlagsRegex();
 		[GeneratedRegex(@"(\s|^)(?<value>FLAG_\w+)(\s|$)")]
 		private static partial Regex BattleMoveFlagsPieceRegex();
-		[GeneratedRegex(@"^\s*\.type2\s+=\s+(?<value>[^,]+?)\s*,?")]
+		[GeneratedRegex(@"^\s*\.argument\s+=\s+(?<value>[^,]+)\s*,?")]
 		private static partial Regex BattleMoveArgumentRegex();
 		[GeneratedRegex(@"^\s*\}\s*,")]
 		private static partial Regex BattleMoveEndRegex();
