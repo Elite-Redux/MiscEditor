@@ -147,7 +147,7 @@ namespace AbilityEditor
 			viewModel.SelectedAbility = viewModel.Abilities.Abilities.Last();
 		}
 
-		[GeneratedRegex(@"^[a-z][a-z_0-9]+$")]
+		[GeneratedRegex(@"^[a-zA-Z][a-zA-Z_0-9]+$")]
 		private static partial Regex ValidEnum();
 
 		private void SaveAbility(object sender, RoutedEventArgs e)
