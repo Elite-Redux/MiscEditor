@@ -216,7 +216,7 @@ namespace AbilityEditor
 		private static partial Regex BattleMoveAccuracyRegex();
 		[GeneratedRegex(@"^\s*\.pp\s+=\s+(?<value>\d+)\s*,?")]
 		private static partial Regex BattleMovePpRegex();
-		[GeneratedRegex(@"^\s*\.priority\s+=\s+(?<value>\d+)\s*,?")]
+		[GeneratedRegex(@"^\s*\.priority\s+=\s+(?<value>-?\d+)\s*,?")]
 		private static partial Regex BattleMovePriorityRegex();
 		[GeneratedRegex(@"^\s*\.secondaryEffectChance\s+=\s+(?<value>\d+)\s*,?")]
 		private static partial Regex BattleMoveSecondaryEffectChanceRegex();
